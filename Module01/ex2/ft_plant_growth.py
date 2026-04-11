@@ -14,7 +14,7 @@ class Plant:
         self.height = round(self.height + self.growth_rate, 2)
 
     def show(self):
-        print(f"{self.name}: {self.height}cm, {self.age} days old")
+        print(f"{self.name}: {round(self.height)}cm, {self.age} days old")
 
 
 def main():
