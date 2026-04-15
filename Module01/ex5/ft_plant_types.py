@@ -21,14 +21,15 @@ class Flower(Plant):
         super().__init__(name, height, age)
         self.color = color
         self.is_blooming = False
-    
+
     def bloom(self):
         self.is_blooming = True
 
     def show(self):
         super().show()
         print(f"Color: {self.color}")
-        status = "blooming beautifully!" if self.is_blooming else "has not bloomed yet"
+        status = ("blooming beautifully!" if self.is_blooming
+                  else "has not bloomed yet")
         print(f"{self.name} {status}")
 
 
@@ -38,7 +39,8 @@ class Tree(Plant):
         self.trunk_diameter = trunk_diameter
 
     def produce_shade(self):
-        print(f"Tree {self.name} now produces a shade of {self._height}cm long and {self.trunk_diameter}cm wide.")
+        print(f"Tree {self.name} now produces a shade of "
+              f"{self._height}cm long and {self.trunk_diameter}cm wide.")
 
     def show(self):
         super().show()
@@ -85,7 +87,6 @@ def main():
         tomato.age_days(1)
         tomato.grow(2.1)
     tomato.show()
-
 
 
 if __name__ == "__main__":
