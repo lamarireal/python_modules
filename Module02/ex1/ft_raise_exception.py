@@ -3,7 +3,10 @@
 def input_treperature(temp_str: str) -> int:
     temp = int(temp_str)
     if temp > 40:
-        raise ValueError(f"Caught input_temperature error: {temp}°C is too hot for plants (max 40°C)")
+        raise ValueError(
+            f"Caught input_temperature error: {temp}°C is too hot"
+            f" for plants (max 40°C)"
+        )
     return temp
 
 
