@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 class GardenError(Exception):
     def __init__(self, message="A garden error occurred"):
         self.message = message

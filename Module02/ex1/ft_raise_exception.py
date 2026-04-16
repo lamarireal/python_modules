@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 def input_treperature(temp_str: str) -> int:
     temp = int(temp_str)
     if temp > 40:

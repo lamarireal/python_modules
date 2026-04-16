@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 def garden_operations(operation_number: int):
     if operation_number == 0:
         return int("abc")
