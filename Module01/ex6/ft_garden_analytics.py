@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 class Plant:
     class InternalSystem:
         def __init__(self):

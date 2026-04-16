@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 class Plant:
     def __init__(self, name, height, age, growth_rate):
         self.name = name
