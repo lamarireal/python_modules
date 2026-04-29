@@ -30,7 +30,7 @@ def main():
 
     except ArchiveError as e:
         print(f"Error opening file '{arg}': {e.message}")
-
+        return
     finally:
         if file is not None:
             file.close()
