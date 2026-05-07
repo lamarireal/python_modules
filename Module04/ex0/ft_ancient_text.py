@@ -23,10 +23,10 @@ def main():
         except (FileNotFoundError, PermissionError) as e:
             raise ArchiveError(str(e))
 
-        print("---")
+        print("---\n")
         content = file.read()
         print(content.strip())
-        print("---")
+        print("\n---")
 
     except ArchiveError as e:
         print(f"Error opening file '{arg}': {e.message}")

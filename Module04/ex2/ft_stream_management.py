@@ -7,7 +7,24 @@ class ArchiveError(Exception):
         super().__init__(message)
 
 
-def main():
+def ft_save_data(file: str, data: str) -> None:
+    new_archive = None
+
+    try:
+        print(f"Saving data to '{file}'")
+        new_archive = open(file, 'w')
+        new_archive.write(data)
+        new_archive.flush()
+        print(f"Data saved in file '{file}'\n")
+    except Exception as e:
+        sys.stderr.write(f"[STDERR] Error opening file: '{file}': {e}\n")
+        return
+    finally:
+        if new_archive is not None:
+            new_archive.close()
+
+
+def main() -> None:
     if len(sys.argv) != 2:
         print(f"Usage: {sys.argv[0]} <file>")
         return
@@ -22,7 +39,7 @@ def main():
 
     try:
         try:
-            file = open(arg, 'r', encoding='utf-8')
+            file = open(arg, 'r')
             lines = file.readlines()
         except (FileNotFoundError, PermissionError) as e:
             raise ArchiveError(str(e))
@@ -33,7 +50,7 @@ def main():
         print("\n---")
 
     except ArchiveError as e:
-        print(f"Error opening file '{arg}': {e.message}")
+        sys.stderr.write(f"[STDERR] Error opening file '{arg}': {e.message}\n")
         return
 
     finally:
@@ -55,24 +72,15 @@ def main():
 
     print("\n---")
 
-    new_file = input("Enter new file name (or empty): ")
-    new_archive = None
+    print("Enter new file name (or empty): ", end='', flush=True)
+    new_file = sys.stdin.readline()
+    new_file = new_file.rstrip('\n').strip()
 
     if new_file == '':
         print("Not saving data.")
         return
-
-    try:
-        print(f"Saving data to '{new_file}'")
-        new_archive = open(new_file, 'w', encoding='utf-8')
-        new_archive.write(data_transform)
-        print(f"Data saved in file '{new_file}'\n")
-    except Exception as e:
-        print(f"[STDERR] Error opening file: '{new_file}': {e}")
-        return
-    finally:
-        if new_archive is not None:
-            new_archive.close()
+    else:
+        ft_save_data(new_file, data_transform)
 
 
 if __name__ == "__main__":
