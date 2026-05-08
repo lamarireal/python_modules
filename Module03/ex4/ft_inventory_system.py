@@ -1,12 +1,13 @@
 import sys
 
 
-def main():
+def main() -> None:
     if len(sys.argv) < 2:
         print("Usage: python3 ft_inventory_system.py item:qty ...")
         return
 
     inventory = {}
+    print("=== Inventory System Analysis ===")
     for param in sys.argv[1:]:
         if ":" not in param:
             print(f"Error - invalid parameter '{param}'")
@@ -29,7 +30,6 @@ def main():
         print("Inventory is empty.")
         return
 
-    print("=== Inventory System Analysis ===")
     print(f"Got inventory: {inventory}")
 
     item_list = list(inventory.keys())
@@ -42,8 +42,8 @@ def main():
         percentage = (qty / total_qty) * 100
         print(f"Item {item} represents {percentage:.1f}%")
 
-    most_abundant = max(inventory, key=inventory.get)
-    least_abundant = min(inventory, key=inventory.get)
+    most_abundant = max(inventory, key=lambda x: inventory[x])
+    least_abundant = min(inventory, key=lambda x: inventory[x])
 
     print(f"Item most abundant: {most_abundant} with quantity "
           f"{inventory[most_abundant]}")

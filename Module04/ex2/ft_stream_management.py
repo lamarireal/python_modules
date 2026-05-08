@@ -7,7 +7,7 @@ class ArchiveError(Exception):
         super().__init__(message)
 
 
-def ft_save_data(file: str, data: str) -> None:
+def ft_save_data(file: str, data: str) -> bool:
     new_archive = None
 
     try:
@@ -15,10 +15,10 @@ def ft_save_data(file: str, data: str) -> None:
         new_archive = open(file, 'w')
         new_archive.write(data)
         new_archive.flush()
-        print(f"Data saved in file '{file}'\n")
+        return True
     except Exception as e:
         sys.stderr.write(f"[STDERR] Error opening file: '{file}': {e}\n")
-        return
+        return False
     finally:
         if new_archive is not None:
             new_archive.close()
@@ -80,7 +80,11 @@ def main() -> None:
         print("Not saving data.")
         return
     else:
-        ft_save_data(new_file, data_transform)
+        if ft_save_data(new_file, data_transform) is True:
+            print(f"Data saved in file '{new_file}'\n")
+        else:
+            print("Data not saved.")
+
 
 
 if __name__ == "__main__":

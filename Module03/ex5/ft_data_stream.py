@@ -8,7 +8,6 @@ ACTIONS = ["run", "eat", "sleep", "grab",
 
 
 def gen_event() -> Generator[tuple, None, None]:
-    """Бесконечный генератор случайных игровых событий."""
     while True:
         name = random.choice(PLAYERS)
         action = random.choice(ACTIONS)
@@ -22,17 +21,14 @@ def consume_event(event_list: list) -> Generator[tuple, None, None]:
         yield event
 
 
-def main():
+def main() -> None:
     print("=== Game Data Stream Processor ===")
 
     event_stream = gen_event()
 
     for i in range(1000):
         name, action = next(event_stream)
-        if i < 15 or i > 991:
-            print(f"Event {i}: Player {name} did action {action}")
-        elif i == 15:
-            print("[...]")
+        print(f"Event {i}: Player {name} did action {action}")
 
     ten_events = [next(event_stream) for _ in range(10)]
     print(f"\nBuilt list of 10 events: {ten_events}")

@@ -68,7 +68,7 @@ def main():
         new_archive.write(data_transform)
         print(f"Data saved in file '{new_file}'\n")
     except Exception as e:
-        print(f"[STDERR] Error opening file: '{new_file}': {e}")
+        print(f"Error opening file: '{new_file}': {e}")
         return
     finally:
         if new_archive is not None:

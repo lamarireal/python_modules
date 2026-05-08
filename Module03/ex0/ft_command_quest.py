@@ -1,7 +1,7 @@
 import sys
 
 
-def ft_command_quest():
+def ft_command_quest() -> None:
     print("=== Command Quest ===")
 
     print(f"Program name: {sys.argv[0]}")

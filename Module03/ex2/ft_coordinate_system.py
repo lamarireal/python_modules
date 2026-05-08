@@ -1,7 +1,7 @@
 import math
 
 
-def get_player_pos():
+def get_player_pos() -> tuple:
     while True:
         try:
             line = input("Enter new coordinates as floats in format 'x,y,z': ")
@@ -22,14 +22,14 @@ def get_player_pos():
             print(f"Invalid syntax: {e}")
 
 
-def calculate_distance(p1, p2):
+def calculate_distance(p1, p2) -> float:
     dx = p2[0] - p1[0]
     dy = p2[1] - p1[1]
     dz = p2[2] - p1[2]
     return math.sqrt(dx**2 + dy**2 + dz**2)
 
 
-def main():
+def main() -> None:
     print("=== Game Coordinate System ===")
 
     print("Get a first set of coordinates")
