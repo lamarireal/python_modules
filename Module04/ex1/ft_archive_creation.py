@@ -65,11 +65,10 @@ def main():
     try:
         print(f"Saving data to '{new_file}'")
         new_archive = open(new_file, 'w', encoding='utf-8')
-        new_archive.write(data_transform)
-        print(f"Data saved in file '{new_file}'\n")
+        new_archive.write(data_transform + '\n')
+        print(f"Data saved in file '{new_file}'.")
     except Exception as e:
         print(f"Error opening file: '{new_file}': {e}")
-        return
     finally:
         if new_archive is not None:
             new_archive.close()
