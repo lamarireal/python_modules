@@ -1,17 +1,11 @@
 import sys
 
 
-class ArchiveError(Exception):
-    def __init__(self, message):
-        self.message = message
-        super().__init__(message)
-
-
 def ft_save_data(file_path: str, data: str) -> bool:
     new_archive = None
     try:
         print(f"Saving data to '{file_path}'")
-        new_archive = open(file_path, 'w', encoding='utf-8')
+        new_archive = open(file_path, 'w')
         new_archive.write(data)
         new_archive.flush()
         return True
@@ -37,19 +31,19 @@ def main() -> None:
     lines = []
 
     try:
-        try:
-            file = open(arg, 'r', encoding='utf-8')
-            lines = file.readlines()
-        except (FileNotFoundError, PermissionError) as e:
-            raise ArchiveError(str(e))
+        file = open(arg, 'r')
+        lines = file.readlines()
 
-        print("---")
-        content_original = "".join(lines).strip()
-        print(content_original)
-        print("---")
+        print("---\n")
+        content_original = "".join(lines)
+        print(content_original.strip())
+        print("\n---")
 
-    except ArchiveError as e:
-        sys.stderr.write(f"[STDERR] Error opening file '{arg}': {e.message}\n")
+    except (FileNotFoundError, PermissionError) as e:
+        sys.stderr.write(f"[STDERR] Error opening file '{arg}': {e}\n")
+        return
+    except Exception as e:
+        sys.stderr.write(f"[STDERR] Error opening file '{arg}': {e}\n")
         return
     finally:
         if file is not None:
@@ -61,11 +55,11 @@ def main() -> None:
 
     transformed_content = ""
     for line in lines:
-        mod_line = line.rstrip('\n\r') + '#\n'
+        mod_line = line.rstrip('\n') + '#\n'
         transformed_content += mod_line
         sys.stdout.write(mod_line)
         sys.stdout.flush()
-    
+
     print("---")
 
     sys.stdout.write("Enter new file name (or empty): ")

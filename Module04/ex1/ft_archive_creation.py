@@ -1,12 +1,6 @@
 import sys
 
 
-class ArchiveError(Exception):
-    def __init__(self, message):
-        self.message = message
-        super().__init__(message)
-
-
 def main():
     if len(sys.argv) != 2:
         print(f"Usage: {sys.argv[0]} <file>")
@@ -21,19 +15,19 @@ def main():
     lines = []
 
     try:
-        try:
-            file = open(arg, 'r', encoding='utf-8')
-            lines = file.readlines()
-        except (FileNotFoundError, PermissionError) as e:
-            raise ArchiveError(str(e))
+        file = open(arg, 'r')
+        lines = file.readlines()
 
         print("---\n")
         content_original = "".join(lines)
         print(content_original.strip())
         print("\n---")
 
-    except ArchiveError as e:
-        print(f"Error opening file '{arg}': {e.message}")
+    except (FileNotFoundError, PermissionError) as e:
+        print(f"Error opening file '{arg}': {e}")
+        return
+    except Exception as e:
+        print(f"Error opening file '{arg}': {e}")
         return
 
     finally:
@@ -47,11 +41,11 @@ def main():
     data_transform = ""
 
     for line in lines:
-        mod_line = line.rstrip('\n\r') + '#\n'
+        mod_line = line.rstrip('\n') + '#\n'
 
         data_transform += mod_line
         print(mod_line, end='')
-    data_transform.rstrip('\n\n')
+    data_transform = data_transform.rstrip('\n')
 
     print("\n---")
 
@@ -64,7 +58,7 @@ def main():
 
     try:
         print(f"Saving data to '{new_file}'")
-        new_archive = open(new_file, 'w', encoding='utf-8')
+        new_archive = open(new_file, 'w')
         new_archive.write(data_transform + '\n')
         print(f"Data saved in file '{new_file}'.")
     except Exception as e:

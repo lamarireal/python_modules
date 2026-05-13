@@ -1,12 +1,6 @@
 import sys
 
 
-class ArchiveError(Exception):
-    def __init__(self, message):
-        self.message = message
-        super().__init__(message)
-
-
 def main():
     if len(sys.argv) != 2:
         print(f"Usage: {sys.argv[0]} <file>")
@@ -18,19 +12,16 @@ def main():
     print(f"Accessing file '{arg}'")
     file = None
     try:
-        try:
-            file = open(arg, 'r', encoding='utf-8')
-        except (FileNotFoundError, PermissionError) as e:
-            raise ArchiveError(str(e))
+        file = open(arg, 'r')
 
         print("---\n")
         content = file.read()
         print(content.strip())
         print("\n---")
-
-    except ArchiveError as e:
-        print(f"Error opening file '{arg}': {e.message}")
-        return
+    except (FileNotFoundError, PermissionError) as e:
+        print(f"Error opening file '{arg}': {e}")
+    except Exception as e:
+        print(f"Error opening file '{arg}': {e}")
     finally:
         if file is not None:
             file.close()
