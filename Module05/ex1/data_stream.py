@@ -162,7 +162,7 @@ def main():
 
     print("Registering Numeric Processor")
     num_proc = NumericProcessor()
-    ds.register_processor(num_proc)
+    ds.reg_processor(num_proc)
 
     batch = [
         'Hello world', 
@@ -180,8 +180,8 @@ def main():
     print("Registering other data processors")
     text_proc = TextProcessor()
     log_proc = LogProcessor()
-    ds.register_processor(text_proc)
-    ds.register_processor(log_proc)
+    ds.reg_processor(text_proc)
+    ds.reg_processor(log_proc)
 
     print("Send the same batch again")
     ds.process_stream(batch)
