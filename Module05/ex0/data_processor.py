@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 
 class DataProcessor(ABC):
-    def __init__(self):
+    def __init__(self) -> None:
         self._internal_data: List[tuple[int, str]] = []
         self._current_rank = 0
 
@@ -22,27 +22,19 @@ class DataProcessor(ABC):
 
 
 class NumericProcessor(DataProcessor):
-    def validate(self,
-            data: Any
-        ) -> bool:
+    def validate(self, data: Any) -> bool:
 
         if isinstance(data, (int, float)):
             return True
-        if isinstance(data, list)and all(isinstance(x,
-                                    (int, float)) for x in data):
+        if isinstance(data, list) and all(
+            isinstance(x, (int, float)) for x in data
+        ):
             return True
         return False
 
-    def ingest(self, data: 
-        Union[
-            int,
-            float,
-            List[Union[
-                int,
-                float]
-                ]
-            ]
-        ) -> None:
+    def ingest(
+            self,
+            data: Union[int, float, List[Union[int, float]]]) -> None:
 
         if not self.validate(data):
             raise ValueError("Improper numeric data")
@@ -60,18 +52,8 @@ class TextProcessor(DataProcessor):
         if isinstance(data, list) and all(isinstance(x, str) for x in data):
             return True
         return False
-    
-    def ingest(
-            self,
-            data: Union[
-                int,
-                str,
-                List[Union[
-                    int,
-                    str]
-                ]
-            ]
-        ) -> None:
+
+    def ingest(self, data: Union[str, List[str]]) -> None:
         if not data:
             raise ValueError("Improper numeric data")
 
@@ -82,31 +64,30 @@ class TextProcessor(DataProcessor):
 
 
 class LogProcessor(DataProcessor):
-    def validate(self,
-            data: Any
-        ) -> bool:
+    def validate(self, data: Any) -> bool:
 
         def is_log_dict(d):
-            return isinstance(d, dict)and all(isinstance(k, str) and
-                                    isinstance(v, str) for k,v in d.items())
-        
+            return isinstance(d, dict) and all(
+                isinstance(k, str) and isinstance(v, str)
+                for k, v in d.items()
+            )
+
         if is_log_dict(data):
             return True
         if isinstance(data, list) and all(is_log_dict(x) for x in data):
             return True
         return False
-    
+
     def ingest(
             self,
             data: Union[
                 Dict[str, str],
                 List[Dict[str, str]]
-                ]
-        ) -> None:
+                ]) -> None:
 
         if not self.validate(data):
             raise ValueError("Improper numeric data")
-        
+
         items = data if isinstance(data, list) else [data]
         for item in items:
             formatted_log = ", ".join([f"{k}: {v}" for k, v in item.items()])
@@ -158,7 +139,6 @@ def run_tests() -> None:
             rank, val = lp.output()
             print(f"Log entry {rank}: {val}")
     except IndexError:
-        print("LOGGG...")
         pass
 
 
