@@ -54,8 +54,8 @@ class TextProcessor(DataProcessor):
         return False
 
     def ingest(self, data: Union[str, List[str]]) -> None:
-        if not data:
-            raise ValueError("Improper numeric data")
+        if not self.validate(data):
+            raise ValueError("Improper text data")
 
         items = data if isinstance(data, list) else [data]
         for item in items:
@@ -86,11 +86,19 @@ class LogProcessor(DataProcessor):
                 ]) -> None:
 
         if not self.validate(data):
-            raise ValueError("Improper numeric data")
+            raise ValueError("Improper log data")
 
         items = data if isinstance(data, list) else [data]
         for item in items:
-            formatted_log = ", ".join([f"{k}: {v}" for k, v in item.items()])
+            level = item.get('log_level', '')
+            msg = item.get('log_message', '')
+            if level and msg:
+                formatted_log = f"{level}: {msg}"
+            else:
+                formatted_log = ", ".join(
+                    [f"{k}: {v}" for k, v in item.items()]
+                )
+
             self._internal_data.append((self._current_rank, formatted_log))
             self._current_rank += 1
 
@@ -134,12 +142,9 @@ def run_tests() -> None:
     print(f"Processing data: {log_data}")
     lp.ingest(log_data)
     print(f"Extracting {len(log_data)} values...")
-    try:
-        while True:
-            rank, val = lp.output()
-            print(f"Log entry {rank}: {val}")
-    except IndexError:
-        pass
+    for _ in range(len(log_data)):
+        rank, val = lp.output()
+        print(f"Log entry {rank}: {val}")
 
 
 if __name__ == "__main__":

@@ -71,8 +71,8 @@ class TextProcessor(DataProcessor):
     def ingest(
             self,
             data: Union[str, List[str]]) -> None:
-        if not data:
-            raise ValueError("Improper numeric data")
+        if not self.validate(data):
+            raise ValueError("Improper text data")
 
         items = data if isinstance(data, list) else [data]
         for item in items:
@@ -103,11 +103,19 @@ class LogProcessor(DataProcessor):
                 ]) -> None:
 
         if not self.validate(data):
-            raise ValueError("Improper numeric data")
+            raise ValueError("Improper log data")
 
         items = data if isinstance(data, list) else [data]
         for item in items:
-            formatted_log = f"{item['log_level']}: {item['log_message']}"
+            level = item.get('log_level', '')
+            msg = item.get('log_message', '')
+            if level and msg:
+                formatted_log = f"{level}: {msg}"
+            else:
+                formatted_log = ", ".join(
+                    [f"{k}: {v}" for k, v in item.items()]
+                )
+
             self._internal_data.append((self._current_rank, formatted_log))
             self._current_rank += 1
             self._total_count += 1
@@ -117,7 +125,7 @@ class DataStream:
     def __init__(self) -> None:
         self.processors: List[DataProcessor] = []
 
-    def reg_processor(self, processor: DataProcessor) -> None:
+    def register_processor(self, processor: DataProcessor) -> None:
         self.processors.append(processor)
 
     def process_stream(self, stream: list[typing.Any]) -> None:
@@ -142,7 +150,7 @@ class DataStream:
 
         for proc in self.processors:
             total, remaining = proc.stats
-            name = proc.__class__.__name__.replace("Processor", "Processor")
+            name = proc.__class__.__name__.replace("Processor", " Processor")
             print(
                 f"{name}: total {total} items processed, "
                 f"remaining {remaining} on processor"
@@ -187,9 +195,9 @@ def main():
     text_proc = TextProcessor()
     log_proc = LogProcessor()
 
-    ds.reg_processor(num_proc)
-    ds.reg_processor(text_proc)
-    ds.reg_processor(log_proc)
+    ds.register_processor(num_proc)
+    ds.register_processor(text_proc)
+    ds.register_processor(log_proc)
 
     batch_1 = [
         'Hello world',
